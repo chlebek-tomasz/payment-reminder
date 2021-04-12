@@ -1,2 +1,13 @@
-package nwta.paymentreminder.model.payload;public class SigninRequest {
+package nwta.paymentreminder.model.payload;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class SigninRequest {
+    private String email;
+    private String password;
 }

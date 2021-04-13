@@ -2,6 +2,7 @@ package nwta.paymentreminder.service;
 
 import lombok.AllArgsConstructor;
 import nwta.paymentreminder.dto.AuthenticationDTO;
+import nwta.paymentreminder.dto.UserDTO;
 import nwta.paymentreminder.exception.ResourceExistsException;
 import nwta.paymentreminder.exception.ResourceNotFoundException;
 import nwta.paymentreminder.model.User;
@@ -51,7 +52,7 @@ public class AuthService {
             throw new ResourceNotFoundException();
         });
         return AuthenticationDTO.builder()
-                .email(user.getEmail())
+                .user(UserDTO.builder().id(user.getId()).email(user.getEmail()).firstName(user.getFirstName()).lastName(user.getLastName()).build())
                 .token(Base64.getEncoder().encodeToString((request.getEmail() + ':' + request.getPassword()).getBytes(StandardCharsets.UTF_8)))
                 .build();
     }

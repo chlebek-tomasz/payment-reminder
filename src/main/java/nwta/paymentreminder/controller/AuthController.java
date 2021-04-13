@@ -27,9 +27,4 @@ public class AuthController {
     public ResponseEntity<AuthenticationDTO> signin(@RequestBody SigninRequest signinRequest) {
         return new ResponseEntity<>(authService.login(signinRequest), HttpStatus.OK);
     }
-
-    @GetMapping("/user")
-    public ResponseEntity<User> getUser() {
-        return new ResponseEntity<>(authService.getCurrentUser(), HttpStatus.OK);
-    }
 }

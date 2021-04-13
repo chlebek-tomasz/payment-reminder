@@ -1,5 +1,6 @@
 package nwta.paymentreminder.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
-    private Date registerDate;
+    private String registerDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastLoggedIn;
 }

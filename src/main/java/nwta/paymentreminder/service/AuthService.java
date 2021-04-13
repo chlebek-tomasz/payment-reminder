@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
 
@@ -31,7 +33,9 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public void signup(SignupRequest request) {
+    private final SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+
+    public void signup(SignupRequest request) throws ParseException {
         if (userRepository.existsByEmail(request.getEmail()))
             throw new ResourceExistsException(request.getEmail());
         User user = User.builder()
@@ -39,7 +43,7 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
-                .registerDate(new Date())
+                .registerDate(dt.format(new Date()))
                 .build();
         userRepository.save(user);
     }

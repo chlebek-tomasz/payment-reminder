@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
@@ -18,7 +20,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<HttpStatus> signup(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<HttpStatus> signup(@RequestBody SignupRequest signupRequest) throws ParseException {
         authService.signup(signupRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }

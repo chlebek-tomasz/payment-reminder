@@ -26,7 +26,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf()
@@ -35,7 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/api/auth/**")
                 .permitAll()
-                .antMatchers("/v3/api-docs",
+                .antMatchers("/v2/api-docs",
+                        "/v3/api-docs",
                         "/configuration/ui",
                         "/swagger-resources/**",
                         "/configuration/security",

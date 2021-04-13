@@ -27,8 +27,16 @@ public class PaymentController {
     public ResponseEntity<List<PaymentDTO>> getUserPayments(@PathVariable("id") Long id,
                                                             @RequestParam(name = "categoryId", required = false) Long categoryId) {
         if (categoryId != null)
-            return new ResponseEntity<>(service.getUserPaymentsByCategoryId(id, categoryId), HttpStatus.OK);
-        else return new ResponseEntity<>(service.getUserPayments(id), HttpStatus.OK);
+            return new ResponseEntity<>(service.getUserPaymentsByCategoryId(id, categoryId, false), HttpStatus.OK);
+        else return new ResponseEntity<>(service.getUserPayments(id, false), HttpStatus.OK);
+    }
+
+    @GetMapping("/users/{id}/history")
+    public ResponseEntity<List<PaymentDTO>> getUserPaymentsHistory(@PathVariable("id") Long id,
+                                                                   @RequestParam(name = "categoryId", required = false) Long categoryId) {
+        if (categoryId != null)
+            return new ResponseEntity<>(service.getUserPaymentsByCategoryId(id, categoryId, true), HttpStatus.OK);
+        else return new ResponseEntity<>(service.getUserPayments(id, true), HttpStatus.OK);
     }
 
     @PostMapping("/")

@@ -19,10 +19,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -48,20 +45,25 @@ public class PaymentService {
         return buildPaymentDTO(payment);
     }
 
-    public List<PaymentDTO> getUserPayments(Long userId) {
+    public List<PaymentDTO> getUserPayments(Long userId, boolean showHistorical) {
         User user = userRepository.findById(userId).orElseThrow(() -> {
             throw new ResourceNotFoundException();
         });
         if (service.getCurrentUser().getId() != user.getId()) {
             throw new ResourceForbiddenException();
         }
-        List<Payment> payments = paymentRepository.findByUserId(userId);
+
+        List<PaymentStatus> paymentStatuses = new ArrayList<>();
+        if (showHistorical) paymentStatuses = List.of(PaymentStatus.PAID);
+        else paymentStatuses = List.of(PaymentStatus.EXPIRED, PaymentStatus.IS_WAITING);
+
+        List<Payment> payments = paymentRepository.findByUserIdAndStatusIn(userId, paymentStatuses);
         return payments.stream()
                         .map(payment -> buildPaymentDTO(payment))
                         .collect(Collectors.toList());
     }
 
-    public List<PaymentDTO> getUserPaymentsByCategoryId(Long id, Long categoryId) {
+    public List<PaymentDTO> getUserPaymentsByCategoryId(Long id, Long categoryId, boolean showHistorical) {
         User user = userRepository.findById(id).orElseThrow(() -> {
             throw new ResourceNotFoundException();
         });
@@ -71,7 +73,12 @@ public class PaymentService {
         PaymentCategory category = categoryRepository.findById(categoryId).orElseThrow(() -> {
             throw new ResourceNotFoundException();
         });
-        List<Payment> payments = paymentRepository.findByCategoryId(category.getId());
+
+        List<PaymentStatus> paymentStatuses = new ArrayList<>();
+        if (showHistorical) paymentStatuses = List.of(PaymentStatus.PAID);
+        else paymentStatuses = List.of(PaymentStatus.EXPIRED, PaymentStatus.IS_WAITING);
+
+        List<Payment> payments = paymentRepository.findByCategoryIdAndStatusIn(category.getId(), paymentStatuses);
         return payments.stream()
                         .map(payment -> buildPaymentDTO(payment))
                         .collect(Collectors.toList());

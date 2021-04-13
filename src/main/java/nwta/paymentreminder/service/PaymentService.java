@@ -61,6 +61,22 @@ public class PaymentService {
                         .collect(Collectors.toList());
     }
 
+    public List<PaymentDTO> getUserPaymentsByCategoryId(Long id, Long categoryId) {
+        User user = userRepository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException();
+        });
+        if (service.getCurrentUser().getId() != user.getId()) {
+            throw new ResourceForbiddenException();
+        }
+        PaymentCategory category = categoryRepository.findById(categoryId).orElseThrow(() -> {
+            throw new ResourceNotFoundException();
+        });
+        List<Payment> payments = paymentRepository.findByCategoryId(category.getId());
+        return payments.stream()
+                        .map(payment -> buildPaymentDTO(payment))
+                        .collect(Collectors.toList());
+    }
+
     public PaymentDTO editPayment(Long id, PaymentRequest request) throws ParseException {
         Payment payment = paymentRepository.findById(id).orElseThrow(()-> {
             throw new ResourceNotFoundException();

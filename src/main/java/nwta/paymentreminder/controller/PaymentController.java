@@ -24,8 +24,11 @@ public class PaymentController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<List<PaymentDTO>> getUserPayments(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(service.getUserPayments(id), HttpStatus.OK);
+    public ResponseEntity<List<PaymentDTO>> getUserPayments(@PathVariable("id") Long id,
+                                                            @RequestParam(name = "categoryId", required = false) Long categoryId) {
+        if (categoryId != null)
+            return new ResponseEntity<>(service.getUserPaymentsByCategoryId(id, categoryId), HttpStatus.OK);
+        else return new ResponseEntity<>(service.getUserPayments(id), HttpStatus.OK);
     }
 
     @PostMapping("/")

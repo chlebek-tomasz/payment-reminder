@@ -2,6 +2,7 @@ package nwta.paymentreminder.model.payload;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.NumberFormat;
@@ -13,6 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class PaymentRequest {
     @NotNull(message = "Title field cannot be null!")
     @Size(min=3, max=40)

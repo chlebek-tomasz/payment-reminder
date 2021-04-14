@@ -96,14 +96,25 @@ public class PaymentService {
         return buildPaymentDTO(paymentRepository.save(newPayment));
     }
 
-    public PaymentDTO changePaymentStatusToPaid(Long id) {
+    public PaymentDTO changePaymentStatusToPaid(Long id) throws ParseException {
         Payment payment = paymentRepository.findById(id).orElseThrow(()-> {
             throw new ResourceNotFoundException();
         });
         if (payment.getUser().getId() != service.getCurrentUser().getId())
             throw new ResourceForbiddenException();
         payment.setStatus(PaymentStatus.PAID);
-        return buildPaymentDTO(paymentRepository.save(payment));
+        PaymentDTO dto = buildPaymentDTO(paymentRepository.save(payment));
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        addPayment(PaymentRequest.builder()
+                                .title(payment.getTitle())
+                                .recipient(payment.getRecipient())
+                                .amount(payment.getAmount())
+                                .recipientAccountNumber(payment.getRecipientAccountNumber())
+                                .categoryId(payment.getCategory().getId())
+                                .periodicity(payment.getPeriodicity())
+                                .dueTo(payment.getDueTo().plusDays(payment.getPeriodicity()).format(fmt))
+                                .build());
+        return dto;
     }
 
     public void deletePayment(Long id) {

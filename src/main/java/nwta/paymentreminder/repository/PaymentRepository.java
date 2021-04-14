@@ -6,9 +6,12 @@ import nwta.paymentreminder.model.PaymentCategory;
 import nwta.paymentreminder.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
     List<Payment> findByUserIdAndStatusIn(Long userId, List<PaymentStatus> statuses);
     List<Payment> findByCategoryIdAndStatusIn(Long categoryId, List<PaymentStatus> statuses);
+    List<Payment> findByDueToAndStatus(LocalDate date, PaymentStatus status);
+    List<Payment> findByStatus(PaymentStatus status);
 }

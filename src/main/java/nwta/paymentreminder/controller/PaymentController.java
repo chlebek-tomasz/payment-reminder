@@ -56,4 +56,9 @@ public class PaymentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PutMapping("/{id}/paid")
+    public ResponseEntity<PaymentDTO> changePaymentStatusToPaid(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(service.changePaymentStatusToPaid(id), HttpStatus.OK);
+    }
+
 }

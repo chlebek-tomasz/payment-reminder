@@ -96,6 +96,16 @@ public class PaymentService {
         return buildPaymentDTO(paymentRepository.save(newPayment));
     }
 
+    public PaymentDTO changePaymentStatusToPaid(Long id) {
+        Payment payment = paymentRepository.findById(id).orElseThrow(()-> {
+            throw new ResourceNotFoundException();
+        });
+        if (payment.getUser().getId() != service.getCurrentUser().getId())
+            throw new ResourceForbiddenException();
+        payment.setStatus(PaymentStatus.PAID);
+        return buildPaymentDTO(paymentRepository.save(payment));
+    }
+
     public void deletePayment(Long id) {
         Payment payment = paymentRepository.findById(id).orElseThrow(()-> {
             throw new ResourceNotFoundException();

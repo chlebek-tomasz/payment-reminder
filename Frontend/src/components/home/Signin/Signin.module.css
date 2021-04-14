@@ -1,0 +1,25 @@
+.Signin {
+  margin-top: 20px;
+}
+.Signin input {
+  display: block;
+  width: 50%;
+  border: none;
+  border-bottom: 2px solid rgb(46, 140, 202);
+  margin: 20px auto;
+  font-size: 20px;
+}
+
+.Signin input:focus {
+  outline: none;
+}
+
+.Signin button {
+  display: block;
+  margin: auto;
+  width: 50%;
+  background-color: white;
+  border: 2px solid rgb(46, 140, 202);
+  font-size: 15px;
+  padding: 5px;
+}

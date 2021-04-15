@@ -39,6 +39,11 @@ public class PaymentController {
         else return new ResponseEntity<>(service.getUserPayments(id, true), HttpStatus.OK);
     }
 
+    @GetMapping("/users/{id}/nearest")
+    public ResponseEntity<PaymentDTO> getNearestPayment(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(service.getNearestPayment(id), HttpStatus.OK);
+    }
+
     @PostMapping("/")
     public ResponseEntity<PaymentDTO> addPayment(@RequestBody PaymentRequest request) throws ParseException {
         return new ResponseEntity<>(service.addPayment(request), HttpStatus.OK);

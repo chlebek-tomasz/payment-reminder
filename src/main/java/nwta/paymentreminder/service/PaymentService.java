@@ -117,6 +117,16 @@ public class PaymentService {
         return dto;
     }
 
+    public PaymentDTO getNearestPayment(Long userId) {
+        Payment payment = paymentRepository.findFirstByUserIdAndStatusOrderByDueTo(userId, PaymentStatus.IS_WAITING)
+                .orElseThrow(() -> {
+                    throw new ResourceNotFoundException();
+                });
+        if (payment.getUser().getId() != service.getCurrentUser().getId())
+            throw new ResourceForbiddenException();
+        return buildPaymentDTO(payment);
+    }
+
     public void deletePayment(Long id) {
         Payment payment = paymentRepository.findById(id).orElseThrow(()-> {
             throw new ResourceNotFoundException();
@@ -144,7 +154,7 @@ public class PaymentService {
                 .build();
     }
 
-    private PaymentDTO buildPaymentDTO(Payment payment) {
+    public static PaymentDTO buildPaymentDTO(Payment payment) {
         return PaymentDTO.builder()
                 .id(payment.getId())
                 .amount(payment.getAmount())

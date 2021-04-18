@@ -61,7 +61,7 @@ public class PaymentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/paid")
+    @GetMapping("/{id}/paid")
     public ResponseEntity<PaymentDTO> changePaymentStatusToPaid(@PathVariable("id") Long id) throws ParseException {
         return new ResponseEntity<>(service.changePaymentStatusToPaid(id), HttpStatus.OK);
     }

@@ -29,7 +29,7 @@ public class UserService {
             throw new ResourceForbiddenException();
         }
         if (encoder.matches(request.getOldPassword(), user.getPassword())) {
-            user.setPassword(request.getNewPassword());
+            user.setPassword(encoder.encode(request.getNewPassword()));
             repository.save(user);
         } else {
             throw new ResourceForbiddenException();

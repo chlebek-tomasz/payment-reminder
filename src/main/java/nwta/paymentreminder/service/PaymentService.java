@@ -3,6 +3,7 @@ package nwta.paymentreminder.service;
 import lombok.AllArgsConstructor;
 import nwta.paymentreminder.dto.PaymentDTO;
 import nwta.paymentreminder.enums.PaymentStatus;
+import nwta.paymentreminder.exception.NoContentException;
 import nwta.paymentreminder.exception.ResourceForbiddenException;
 import nwta.paymentreminder.exception.ResourceNotFoundException;
 import nwta.paymentreminder.model.Payment;
@@ -120,7 +121,7 @@ public class PaymentService {
     public PaymentDTO getNearestPayment(Long userId) {
         Payment payment = paymentRepository.findFirstByUserIdAndStatusOrderByDueTo(userId, PaymentStatus.IS_WAITING)
                 .orElseThrow(() -> {
-                    throw new ResourceNotFoundException();
+                    throw new NoContentException();
                 });
         if (payment.getUser().getId() != service.getCurrentUser().getId())
             throw new ResourceForbiddenException();

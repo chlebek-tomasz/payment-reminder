@@ -1,6 +1,7 @@
 package nwta.paymentreminder.controller;
 
 import lombok.AllArgsConstructor;
+import nwta.paymentreminder.dto.AuthenticationDTO;
 import nwta.paymentreminder.dto.UserDTO;
 import nwta.paymentreminder.model.payload.ChangeEmailRequest;
 import nwta.paymentreminder.model.payload.ChangePasswordRequest;
@@ -18,10 +19,9 @@ public class UserController {
     private final UserService service;
 
     @PostMapping("/{id}/change-password")
-    public ResponseEntity<HttpStatus> changePassword(@PathVariable("id") Long id,
-                                                     @RequestBody ChangePasswordRequest request) {
-        service.changePassword(id, request);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<AuthenticationDTO> changePassword(@PathVariable("id") Long id,
+                                                            @RequestBody ChangePasswordRequest request) {
+        return new ResponseEntity<>(service.changePassword(id, request), HttpStatus.OK);
     }
 
     @PostMapping("/{id}/change-email")

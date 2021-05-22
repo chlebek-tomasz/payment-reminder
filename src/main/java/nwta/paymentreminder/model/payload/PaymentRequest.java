@@ -17,7 +17,7 @@ import java.util.Date;
 @Builder
 public class PaymentRequest {
     @NotNull(message = "Title field cannot be null!")
-    @Size(min=3, max=40)
+    @Size(min = 3, max = 40)
     private String title;
     @NumberFormat
     @NotNull(message = "Recipient account number field cannot be null!")

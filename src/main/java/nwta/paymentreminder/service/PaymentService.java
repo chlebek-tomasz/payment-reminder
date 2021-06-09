@@ -79,7 +79,7 @@ public class PaymentService {
         if (showHistorical) paymentStatuses = List.of(PaymentStatus.PAID);
         else paymentStatuses = List.of(PaymentStatus.EXPIRED, PaymentStatus.IS_WAITING);
 
-        List<Payment> payments = paymentRepository.findByCategoryIdAndStatusIn(category.getId(), paymentStatuses);
+        List<Payment> payments = paymentRepository.findByCategoryIdAndStatusInAndUserId(category.getId(), paymentStatuses, user.getId());
         return payments.stream()
                         .map(payment -> buildPaymentDTO(payment))
                         .collect(Collectors.toList());

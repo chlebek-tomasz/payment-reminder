@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
     List<Payment> findByUserIdAndStatusIn(Long userId, List<PaymentStatus> statuses);
-    List<Payment> findByCategoryIdAndStatusIn(Long categoryId, List<PaymentStatus> statuses);
+    List<Payment> findByCategoryIdAndStatusInAndUserId(Long categoryId, List<PaymentStatus> statuses, Long userId);
     List<Payment> findByDueToAndStatus(LocalDate date, PaymentStatus status);
     List<Payment> findByStatus(PaymentStatus status);
     Optional<Payment> findFirstByUserIdAndStatusOrderByDueTo(Long userId, PaymentStatus status);
